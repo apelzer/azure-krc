@@ -1,0 +1,264 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_xmlCfg": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountName": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountKey": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountEndPoint": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_AZR_CA_ROOT_name": {
+            "defaultValue": "AZR-CA-ROOT",
+            "type": "String"
+        },
+        "availabilitySets_AVS_PRD_PKI_name": {
+            "defaultValue": "AVS-PRD-PKI",
+            "type": "String"
+        },
+        "storageAccounts_eu2storprdpki_name": {
+            "defaultValue": "eu2storprdpki",
+            "type": "String"
+        },
+        "networkInterfaces_azr_ca_root490_name": {
+            "defaultValue": "azr-ca-root490",
+            "type": "String"
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_name": {
+            "defaultValue": "Microsoft.Insights.VMDiagnosticsSettings",
+            "type": "String"
+        },
+        "virtualMachines_AZR_CA_ROOT_id": {
+            "defaultValue": "/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-PRD-PKI/providers/Microsoft.Compute/disks/AZR-CA-ROOT_OsDisk_1_97c9ef86184144b3b8b53c5a91930c09",
+            "type": "String"
+        },
+        "networkInterfaces_azr_ca_root490_id": {
+            "defaultValue": "/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-ALL-PRD/providers/Microsoft.Network/virtualNetworks/EU2-VNET01/subnets/EU2-VNET01-PKI-PRD",
+            "type": "String"
+        },
+        "networkInterfaces_azr_ca_root490_id_1": {
+            "defaultValue": "/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-ALL-PRD/providers/Microsoft.Network/networkSecurityGroups/EU2-VNET01-PKI-PRD-NSG",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-PRD-PKI/providers/Microsoft.Compute/availabilitySets/AVS-PRD-PKI'.",
+            "type": "Microsoft.Compute/availabilitySets",
+            "sku": {
+                "name": "Aligned"
+            },
+            "name": "[parameters('availabilitySets_AVS_PRD_PKI_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "eastus2",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "platformUpdateDomainCount": 5,
+                "platformFaultDomainCount": 2,
+                "virtualMachines": [
+                    {
+                        "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_AZR_CA_ROOT_name'))]"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_AZR_CA_ROOT_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-PRD-PKI/providers/Microsoft.Compute/virtualMachines/AZR-CA-ROOT'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_AZR_CA_ROOT_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "eastus2",
+            "tags": {
+                "BuildBy": "Al Pelzer",
+                "BuildDate": "10/12/2018",
+                "Department": "Networking",
+                "Environment": "PRD",
+                "Requestor": "Kraig Elliott",
+                "Vendor": "Vandis"
+            },
+            "scale": null,
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_AVS_PRD_PKI_name'))]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_B2ms"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_AZR_CA_ROOT_name'),'_OsDisk_1_97c9ef86184144b3b8b53c5a91930c09')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "[parameters('virtualMachines_AZR_CA_ROOT_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_AZR_CA_ROOT_name')]",
+                    "adminUsername": "localadmin",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_azr_ca_root490_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https', '://', parameters('storageAccounts_eu2storprdpki_name'), '.blob.core.windows.net', '/')]"
+                    }
+                },
+                "licenseType": "Windows_Server"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_AVS_PRD_PKI_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_azr_ca_root490_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_eu2storprdpki_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-PRD-PKI/providers/Microsoft.Network/networkInterfaces/azr-ca-root490'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_azr_ca_root490_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus2",
+            "tags": {
+                "BuildBy": "Al Pelzer",
+                "BuildDate": "10/12/2018",
+                "Department": "Networking",
+                "Environment": "PRD",
+                "Requestor": "Kraig Elliott",
+                "Vendor": "Vandis"
+            },
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "4d9589e7-62fd-4a92-8c1c-7ed162c5d5da",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"98f33fce-223e-4a0b-b074-2f5fc1c313ba\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.7.1.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[parameters('networkInterfaces_azr_ca_root490_id')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "wtplisyhuk3udod020rwsgvx4f.cx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-02-23-DE",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[parameters('networkInterfaces_azr_ca_root490_id_1')]"
+                },
+                "primary": true
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-PRD-PKI/providers/Microsoft.Storage/storageAccounts/eu2storprdpki'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "name": "[parameters('storageAccounts_eu2storprdpki_name')]",
+            "apiVersion": "2018-07-01",
+            "location": "eastus2",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "azureFilesAadIntegration": false,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/58547067-dec0-42ed-9e1a-6de7dce2c25c/resourceGroups/EU2-RSG-PRD-PKI/providers/Microsoft.Compute/virtualMachines/AZR-CA-ROOT/extensions/Microsoft.Insights.VMDiagnosticsSettings'.",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('virtualMachines_AZR_CA_ROOT_name'), '/', parameters('extensions_Microsoft.Insights.VMDiagnosticsSettings_name'))]",
+            "apiVersion": "2017-12-01",
+            "location": "eastus2",
+            "scale": null,
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "StorageAccount": "eu2storprdpki",
+                    "xmlCfg": "[parameters('extensions_Microsoft.Insights.VMDiagnosticsSettings_xmlCfg')]"
+                },
+                "publisher": "Microsoft.Azure.Diagnostics",
+                "type": "IaaSDiagnostics",
+                "typeHandlerVersion": "1.5",
+                "protectedSettings": {
+                    "storageAccountName": "[parameters('extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountName')]",
+                    "storageAccountKey": "[parameters('extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountKey')]",
+                    "storageAccountEndPoint": "[parameters('extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountEndPoint')]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_AZR_CA_ROOT_name'))]"
+            ]
+        }
+    ]
+}

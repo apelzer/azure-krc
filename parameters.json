@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_xmlCfg": {
+            "value": null
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountName": {
+            "value": null
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountKey": {
+            "value": null
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_storageAccountEndPoint": {
+            "value": null
+        },
+        "virtualMachines_AZR_CA_ROOT_name": {
+            "value": null
+        },
+        "availabilitySets_AVS_PRD_PKI_name": {
+            "value": null
+        },
+        "storageAccounts_eu2storprdpki_name": {
+            "value": null
+        },
+        "networkInterfaces_azr_ca_root490_name": {
+            "value": null
+        },
+        "extensions_Microsoft.Insights.VMDiagnosticsSettings_name": {
+            "value": null
+        },
+        "virtualMachines_AZR_CA_ROOT_id": {
+            "value": null
+        },
+        "networkInterfaces_azr_ca_root490_id": {
+            "value": null
+        },
+        "networkInterfaces_azr_ca_root490_id_1": {
+            "value": null
+        }
+    }
+}
